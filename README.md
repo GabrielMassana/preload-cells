@@ -9,10 +9,14 @@
 - Cell height is halp of screen height
 - Auto-layout with PureLayout pod
 
+## Preloading
+
 #### Tag 0.0.2
 
 - Preloading next cell
  
+## Extra Requirements
+
 #### Tag 0.0.3
 
 - Full screen cells
