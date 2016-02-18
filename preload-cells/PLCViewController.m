@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) NSArray *dataArray;
 
+@property (nonatomic, strong) NSLayoutConstraint *tableViewEdgeBottomLayoutConstraint;
+
 @end
 
 @implementation PLCViewController
@@ -52,7 +54,9 @@
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.alwaysBounceVertical = YES;
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        _tableView.rowHeight = CGRectGetHeight([UIScreen mainScreen].bounds) / 2.0f;
+        _tableView.rowHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
+        _tableView.scrollEnabled = NO;
+        _tableView.showsVerticalScrollIndicator = NO;
         
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -87,8 +91,11 @@
     
     [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeTop];
 
-    [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeBottom
-                                     withInset:-CGRectGetHeight([UIScreen mainScreen].bounds) / 2.0];
+    if (!self.tableViewEdgeBottomLayoutConstraint)
+    {
+        self.tableViewEdgeBottomLayoutConstraint = [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeBottom
+                                                                                    withInset:-CGRectGetHeight([UIScreen mainScreen].bounds)];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -111,6 +118,32 @@
     [cell layoutByApplyingConstraints];
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1
+                                                    inSection:indexPath.section];
+    
+    if (self.dataArray.count > nextIndexPath.row)
+    {
+        if (self.dataArray.count == nextIndexPath.row + 1)
+        {
+            [self.view layoutIfNeeded];
+            self.tableViewEdgeBottomLayoutConstraint.constant = 0.0f;
+        }
+        
+        [UIView animateWithDuration:0.0
+                         animations:^
+         {
+             [self.view layoutIfNeeded];
+             [self.tableView selectRowAtIndexPath:nextIndexPath
+                                         animated:NO
+                                   scrollPosition:UITableViewScrollPositionTop];
+         }];
+    }
 }
 
 #pragma mark  - ConfigureCell
