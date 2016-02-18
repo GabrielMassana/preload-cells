@@ -12,3 +12,10 @@
 #### Tag 0.0.2
 
 - Preloading next cell
+ 
+#### Tag 0.0.3
+
+- Full screen cells
+- On tap, show next preloaded cell
+- Table View can not be scrolled by the user 
+
