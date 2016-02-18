@@ -81,7 +81,14 @@
     
     /*-------------------*/
     
-    [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    
+    [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+    
+    [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeTop];
+
+    [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeBottom
+                                     withInset:-CGRectGetHeight([UIScreen mainScreen].bounds) / 2.0];
 }
 
 #pragma mark - UITableViewDataSource
